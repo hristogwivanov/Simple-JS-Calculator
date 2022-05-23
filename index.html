@@ -1,0 +1,196 @@
+<html>
+
+<head>
+    <title>Task 3 - Calculator</title>
+    <style>
+        *:focus {
+outline: none;
+ }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: darkslategray;
+            align-items: center;
+        }
+
+        .cell {
+            height: 80px;
+            width: 80px;
+            margin: 1px;
+            font-size: 42px;
+            border: none;
+
+        }
+
+        .btn {
+            font-size: 46px;
+            font-family: sans-serif;
+            border-radius: 12px;
+        }
+
+        #frame {
+            width: 330px;
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 40px;
+            background: #00B4DB;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to bottom, #0083B0, #00B4DB);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to bottom, #0083B0, #00B4DB);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+            margin: auto;
+
+            padding: 24px;
+            border-radius: 50px;
+
+        }
+
+        .btn {
+            height: 100%;
+            width: 100%;
+            background-color: ghostwhite;
+        }
+
+        .btn:hover {
+            height: 100%;
+            width: 100%;
+            background-color: rgb(204, 211, 215);
+        }
+
+        .top {
+            width: 100%;
+        }
+
+        #display {
+            height: 120px;
+            width: 328px;
+            font-size: 64px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background-color: aliceblue;
+            text-align: right;
+        }
+
+        #main {
+            margin: auto;
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div id="frame">
+            <div class="top"><input id="display" type="text" onblur="this.focus()" autofocus></div>
+            <div class="cell"><button class="btn" onclick="invert()">+/-</button></div>
+            <div class="cell"><button class="btn" onclick="clearAll()">CE</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp('%')">%</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp('/')">/</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(7)">7</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(8)">8</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(9)">9</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp('*')">X</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(4)">4</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(5)">5</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(6)">6</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp('-')">-</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(1)">1</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(2)">2</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp(3)">3</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp('+')">+</button></div>
+            <div class="cell"><button class="btn" onclick="removeLastChar()">&#9003;</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp('0')">0</button></div>
+            <div class="cell"><button class="btn" onclick="writeOnDisp('.')">.</button></div>
+            <div class="cell"><button class="btn"
+                    onclick="calc(`${document.getElementById('display').value}`)">=</button></div>
+        </div>
+    </div>
+
+    <script>
+
+
+
+        let freshResult=false;
+
+//         // Create listener 
+// document.addEventListener('keydown', () => { console.log('test')})
+
+// // Create event
+// const keyboardEvent = document.createEvent('KeyboardEvent');
+// const initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+
+// keyboardEvent[initMethod](
+//   'keydown', // event type: keydown, keyup, keypress
+//   true,      // bubbles
+//   true,      // cancelable
+//   window,    // view: should be window
+//   false,     // ctrlKey
+//   false,     // altKey
+//   false,     // shiftKey
+//   false,     // metaKey
+//   40,        // keyCode: unsigned long - the virtual key code, else 0
+//   0          // charCode: unsigned long - the Unicode character associated with the depressed key, else 0
+// );
+
+// // Fire event
+// document.dispatchEvent(keyboardEvent);
+
+
+
+        let enterPressed = document.getElementById("display");
+        enterPressed.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                calc(`${document.getElementById('display').value}`)
+            }
+            // if (event.keyCode === 48) {
+            //     console.log(freshResult);
+            //     console.log(`you pressed 0`);
+            //     event.preventDefault();
+            //     writeOnDisp(0);
+         
+            // }
+        });
+
+        function writeOnDisp(input) {
+            if(freshResult===true&&input>=0&&input<=9)
+                 clearAll();
+                freshResult=false;
+                
+            document.getElementById('display').value += `${input}`
+
+        }
+
+        function invert() {
+            document.getElementById('display').value *= -1;
+        }
+        function clearAll() {
+            document.getElementById('display').value = "";
+        }
+
+        function removeLastChar() {
+            document.getElementById('display').value = document.getElementById('display').value.slice(0, -1);
+
+        }
+        function calc(input) {
+            result = eval(`${input}`);
+            console.log(input);
+            console.log(result);
+            document.getElementById('display').value = `${result}`;
+            freshResult=true;
+
+        }
+
+
+    </script>
+</body>
+
+</html>
